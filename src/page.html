@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIENAI — The games haven’t started… yet.</title>
+<style>{{STYLES}}</style>
+</head>
+<body>
+
+<svg class="defs" aria-hidden="true">
+  <defs>
+    <!-- Pixel-chamfered plate, 60x60, from Figma node 3724:5365 -->
+    <path id="plate" d="M52 0V4H60V56H52V60H8V56H0V4H8V0H52Z"/>
+    <!-- Button plate, 136.23x40.6152, from Figma node 3725:8258 -->
+    <path id="key" d="M127.77 5.07715H136.23V35.5381H127.77V40.6152H8.46191V35.5381H0V5.07715H8.46191V0H127.77V5.07715Z"/>
+    <clipPath id="plate-clip"><use href="#plate"/></clipPath>
+    <filter id="glow-blur" x="-38" y="-7" width="136" height="136" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="25"/>
+    </filter>
+  </defs>
+</svg>
+
+<a class="logo-link" href="#intro" aria-label="AIENAI, back to the countdown">
+  <img class="logo" src="{{LOGO}}" width="112" height="24" alt="">
+</a>
+
+<main class="stage view" id="intro">
+  <div class="headline-block">
+    <h1 class="headline">The games haven’t<br>started… yet.</h1>
+
+    <div class="countdown" role="timer" aria-live="off">
+      <div class="unit">
+        <div class="plate">
+          <svg class="plate-art" viewBox="0 0 60 63" width="60" height="63" aria-hidden="true">
+            <use href="#plate" y="3" fill="#2A2E32"/>
+            <use href="#plate" fill="#202326"/>
+            <g clip-path="url(#plate-clip)">
+              <circle cx="30" cy="61" r="18" fill="#00DA66" filter="url(#glow-blur)"/>
+            </g>
+          </svg>
+          <span class="digits" id="hours">4</span>
+        </div>
+        <span class="label">hours</span>
+      </div>
+
+      <span class="colon" aria-hidden="true">:</span>
+
+      <div class="unit">
+        <div class="plate">
+          <svg class="plate-art" viewBox="0 0 60 63" width="60" height="63" aria-hidden="true">
+            <use href="#plate" y="3" fill="#2A2E32"/>
+            <use href="#plate" fill="#202326"/>
+            <g clip-path="url(#plate-clip)">
+              <circle cx="30" cy="61" r="18" fill="#00DA66" filter="url(#glow-blur)"/>
+            </g>
+          </svg>
+          <span class="digits" id="minutes">37</span>
+        </div>
+        <span class="label">minutes</span>
+      </div>
+
+      <span class="colon" aria-hidden="true">:</span>
+
+      <div class="unit">
+        <div class="plate">
+          <svg class="plate-art" viewBox="0 0 60 63" width="60" height="63" aria-hidden="true">
+            <use href="#plate" y="3" fill="#2A2E32"/>
+            <use href="#plate" fill="#202326"/>
+            <g clip-path="url(#plate-clip)">
+              <circle cx="30" cy="61" r="18" fill="#00DA66" filter="url(#glow-blur)"/>
+            </g>
+          </svg>
+          <span class="digits" id="seconds">56</span>
+        </div>
+        <span class="label">seconds</span>
+      </div>
+    </div>
+  </div>
+
+  <a class="enter" href="#schedule" data-focus>
+    <svg class="enter-art" viewBox="0 0 136.23 43.9952" width="136.23" height="43.9952" aria-hidden="true">
+      <use href="#key" y="3.38" fill="#005226"/>
+      <use href="#key" fill="#00DA66"/>
+    </svg>
+    <span class="enter-text">ENTER</span>
+  </a>
+</main>
+
+<section class="schedule view" id="schedule">
+  <h2 class="schedule-title" data-focus tabindex="-1">Q3 Socials</h2>
+
+  <div class="schedule-table">
+    <div class="schedule-head">
+      <span class="col-time">TIME</span>
+      <span class="col-segment">SEGMENT</span>
+      <span class="col-duration">DURATION</span>
+    </div>
+    <div class="schedule-rows" id="schedule-rows"></div>
+  </div>
+</section>
+
+<div class="grid-pattern" aria-hidden="true"><svg id="grid" aria-hidden="true"></svg></div>
+<canvas class="lasers" id="lasers" aria-hidden="true"></canvas>
+
+<!-- Figma node 3746:10797. Sits outside both views so it hangs over the intro
+     and the schedule alike, and after the canvas so the beams pass behind it. -->
+<div class="disco" aria-hidden="true">
+  <span class="disco-cord"></span>
+  <span class="disco-ball"></span>
+</div>
+
+{{SCRIPT}}
+</body>
+</html>

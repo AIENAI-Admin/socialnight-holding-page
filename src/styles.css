@@ -1,0 +1,469 @@
+/* AIENAI holding page — Figma "HUM App" node 3719:5247 (Desktop - 1, 1440x832) */
+
+/* Source Sans 3 stands in for Adobe Clean, which has no web-licensable equivalent. */
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("{{FONT:press-start-2p}}") format("woff2");
+}
+
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("{{FONT:source-sans-3-400}}") format("woff2");
+}
+
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url("{{FONT:source-sans-3-700}}") format("woff2");
+}
+
+:root {
+  --bg: #0f0f0f;
+  --plate-face: #202326;
+  --plate-edge: #2A2E32;
+  --green: #00DA66;
+  --muted: #b3b3b3;
+  --green-shadow: #005226;
+  --pixel: "Press Start 2P", monospace;
+  --ui: "Source Sans 3", "Adobe Clean", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* Both need overflow hidden, not just body: the off-state drift transforms push
+   a view ~10px past the bottom edge, and overflow propagates html -> body, never
+   body -> html. Left on html alone the viewport scrolls that 10px and shifts
+   everything, the logo included. */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #fff;
+  font-family: var(--ui);
+  overflow: hidden;
+}
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* The logo is the only route back to the countdown, so it sits above both
+   views rather than alongside them at z-index 2. */
+.logo-link {
+  position: absolute;
+  top: 28px;
+  left: 24px;
+  display: block;
+  width: 112px;
+  height: 24px;
+  z-index: 3;
+}
+
+.logo-link:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 6px;
+}
+
+.logo {
+  display: block;
+  width: 112px;
+  height: 24px;
+  object-fit: cover;
+}
+
+/* Both views share the grid behind them, so only the foreground cross-fades.
+   The outgoing view clears before the incoming one starts arriving, and each
+   carries a 10px drift. The resting transform lives on the view itself; only
+   the off states shift.
+
+   Opacity and the drift start together, but the drift runs 100ms longer, so
+   the content is gone before it settles and the eye never sees it stop. */
+.view {
+  opacity: 0;
+  visibility: hidden;
+  transition-property: opacity, transform, visibility;
+  transition-duration: 300ms, 400ms, 0s;
+  transition-timing-function: ease, ease, linear;
+  transition-delay: 0s, 0s, 400ms;
+}
+
+.view.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 200ms, 200ms, 0s;
+}
+
+/* The intro drifts downwards throughout its life: it arrives from above and
+   leaves below, so the motion never reverses. The two offsets are distinct
+   states, which is why leaving is tracked explicitly rather than inferred. */
+.stage:not(.is-active) {
+  transform: translate(-50%, calc(-50% - 10px));
+}
+
+.stage.is-leaving {
+  transform: translate(-50%, calc(-50% + 10px));
+}
+
+/* The schedule rises into place and sinks back out. */
+.schedule:not(.is-active) {
+  transform: translateY(10px);
+}
+
+/* Used for one frame to reposition a hidden view without animating the jump. */
+.view.no-transition {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view,
+  .view.is-active,
+  .enter {
+    transition: none;
+  }
+}
+
+/* Centre stack: 758px wide, 40px between the headline block and the button. */
+.stage {
+  position: absolute;
+  top: calc(50% + 0.5px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 758px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  z-index: 2;
+}
+
+.headline-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+}
+
+.headline {
+  margin: 0;
+  width: 100%;
+  font-family: var(--pixel);
+  font-size: 44px;
+  line-height: 46px;
+  letter-spacing: -1.76px;
+  font-weight: 400;
+  text-align: center;
+  color: #fff;
+}
+
+/* Countdown: three 60x93 units on a 98px pitch, colons centred in the gaps. */
+.countdown {
+  display: grid;
+  grid-template-columns: 60px 38px 60px 38px 60px;
+  align-items: start;
+  width: 256px;
+  height: 93px;
+}
+
+.unit {
+  position: relative;
+  width: 60px;
+  height: 93px;
+}
+
+.plate {
+  position: relative;
+  width: 60px;
+  height: 63px;
+}
+
+.plate-art {
+  display: block;
+  width: 60px;
+  height: 63px;
+}
+
+.digits {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--pixel);
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.96px;
+  text-align: center;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.label {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: -0.64px;
+  text-align: center;
+  white-space: nowrap;
+  color: #fff;
+}
+
+/* Colons sit 2px lower than the digits, matching the Figma frame. */
+.colon {
+  margin-top: 20px;
+  font-family: var(--pixel);
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.96px;
+  text-align: center;
+  color: #fff;
+}
+
+.enter {
+  position: relative;
+  display: block;
+  width: 136.23px;
+  height: 43.9952px;
+  text-decoration: none;
+  transition: transform 150ms ease;
+}
+
+/* Scaling the anchor takes the plate and its label together. The label carries
+   its own translateX(-50%), so it has to stay off the animated property or the
+   two transforms overwrite each other and it jumps to the left edge. */
+.enter:hover,
+.enter:focus-visible {
+  transform: scale(1.05);
+}
+
+.enter-art {
+  display: block;
+  width: 136.23px;
+  height: 43.9952px;
+}
+
+.enter-text {
+  position: absolute;
+  top: 8.88px;
+  left: 68.31px;
+  transform: translateX(-50%);
+  font-family: var(--pixel);
+  font-size: 12.692px;
+  line-height: 23.692px;
+  letter-spacing: -0.2538px;
+  white-space: nowrap;
+  color: #000;
+}
+
+.enter:hover .enter-text,
+.enter:focus-visible .enter-text {
+  text-decoration: underline;
+}
+
+/* Run of show: a 680px column, left edge at 372px on the 1440px frame. */
+.schedule {
+  position: absolute;
+  top: 80px;
+  bottom: 0;
+  left: calc(50% - 348px);
+  width: 680px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 2;
+}
+
+.schedule-title {
+  margin: 0;
+  padding: 8px;
+  border-bottom: 1px solid var(--green);
+  font-family: var(--pixel);
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.96px;
+  font-weight: 400;
+  color: #fff;
+}
+
+/* The heading only takes focus to carry the reader across the transition. */
+.schedule-title:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.schedule-table {
+  margin-top: 40px;
+}
+
+/* Scaled ~15% up from the Figma 13px, with the row box and the time column
+   widened to match so nothing tightens or clips. Eleven rows at this size
+   still clear the 832px frame without scrolling. */
+.schedule-head,
+.schedule-row {
+  display: flex;
+  align-items: center;
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 21px;
+  color: #fff;
+}
+
+.schedule-head {
+  height: 32px;
+  background: var(--plate-face);
+  letter-spacing: 0.9px;
+}
+
+.schedule-row {
+  height: 56px;
+}
+
+.col-time {
+  flex: none;
+  width: 78px;
+  padding: 0 8px;
+}
+
+.col-segment {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 0 16px;
+}
+
+.col-duration {
+  flex: none;
+  padding: 0 16px;
+  text-align: right;
+}
+
+/* The row inherits bold from .schedule-row, so the UA's `b { bolder }` would
+   resolve to 900 and only land on 700 for want of a heavier face. Pin it. */
+.schedule-row .col-segment b {
+  font-weight: 700;
+}
+
+/* The detail line steps back to regular, which is why a 400 face is loaded
+   alongside the 700 one — without it, font matching reuses the bold. */
+.schedule-row .col-segment small {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--muted);
+}
+
+.schedule-row .col-duration {
+  color: var(--muted);
+}
+
+/* Drawn at runtime by src/grid.js so the floor fills any viewport. */
+.grid-pattern {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.grid-pattern > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Disco ball, Figma node 3746:10797: a 2px cord from the top edge down 140px,
+   then a 100x100 ball at y=132, so the ball overlaps the last 8px of cord.
+   Frame sits at x=1182 on the 1440 design, i.e. 158px in from the right.
+
+   Horizontal position is the further right of two anchors. The right-hand one
+   holds the design's corner offset, which is what wide screens get. The other
+   keeps it clear of the 758px stage, and wins once the viewport is narrow
+   enough that the corner offset would put the ball on top of the headline.
+   Colliding is the worse failure of the two: html and body are overflow
+   hidden, so an overlap cannot be scrolled away, whereas being pushed past
+   the right edge just clips. */
+.disco {
+  position: fixed;
+  top: 0;
+  left: max(calc(100% - 258px), calc(50% + 399px));
+  width: 100px;
+  height: 232px;
+  z-index: 1;
+  pointer-events: none;
+  /* Top of the cord. src/disco.js swings the whole element about this point,
+     so the cord stays straight and the ball travels on its arc. */
+  transform-origin: 50% 0;
+}
+
+/* Below this there is no room for it to be pushed into, and a half-clipped
+   ball reads worse than no ball. */
+@media (max-width: 900px) {
+  .disco { display: none; }
+}
+
+.disco-cord {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 140px;
+  background: #d9d9d9;
+  opacity: 0.15;
+}
+
+/* Deliberately not spinning. The source is a photograph, so its highlights are
+   baked in; rotating the element would carry them round with it and the ball
+   would read as lit from a moving source. */
+.disco-ball {
+  position: absolute;
+  top: 132px;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  background: url("{{DISCO}}") center / cover no-repeat;
+  /* The only thing on either background layer that takes a pointer. Rounded so
+     the grab target matches the ball rather than its bounding square; the
+     image's own edge sits inside the inscribed circle, so nothing is clipped.
+     touch-action stops a drag being claimed as a scroll gesture. */
+  pointer-events: auto;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+}
+
+.disco.is-dragging .disco-ball {
+  cursor: grabbing;
+}
+
+/* Painted by src/lasers.js. Shares the grid's stacking band but comes later in
+   the document, so the beams sit in front of the floor and behind the content
+   without either needing its own z-index. */
+.lasers {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
