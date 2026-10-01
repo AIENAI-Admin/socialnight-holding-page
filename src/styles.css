@@ -455,6 +455,62 @@ body {
   cursor: grabbing;
 }
 
+/* Sound control, bottom right. Above both views at z-index 3 for the same
+   reason the logo is: it has to stay available on the countdown and the run of
+   show alike, and the run of show scrolls underneath it. */
+.sound {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+  font-family: var(--pixel);
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: -0.4px;
+}
+
+.sound-label {
+  margin-right: 2px;
+  color: var(--muted);
+}
+
+/* font: inherit doesn't carry letter-spacing, which is not part of the font
+   shorthand, so the buttons would track differently from the label. */
+.sound-opt {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: #6b6b6b;
+  cursor: pointer;
+}
+
+.sound-opt.is-current {
+  color: var(--green);
+}
+
+.sound-opt:hover:not(.is-current) {
+  color: #fff;
+}
+
+.sound-opt:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+
+/* A rule rather than a character: its height is then set in pixels and doesn't
+   drift with the font's line box. */
+.sound-sep {
+  width: 1px;
+  height: 12px;
+  background: #3a3a3a;
+}
+
 /* Painted by src/lasers.js. Shares the grid's stacking band but comes later in
    the document, so the beams sit in front of the floor and behind the content
    without either needing its own z-index. */

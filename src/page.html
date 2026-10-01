@@ -113,6 +113,18 @@
   <span class="disco-ball"></span>
 </div>
 
+<!-- Outside both views, like the logo, so it stays reachable on the countdown
+     and the run of show alike. Two buttons rather than one switch: the control
+     shows both choices, so people click the one they want, and on a switch
+     clicking ON while already on would turn the music off. Marked up OFF-first
+     with OFF current, which is the honest reading if sound.js never runs. -->
+<div class="sound" role="group" aria-label="Sound">
+  <span class="sound-label">SOUND</span>
+  <button class="sound-opt is-current" type="button" data-sound="off" aria-pressed="true">OFF</button>
+  <span class="sound-sep" aria-hidden="true"></span>
+  <button class="sound-opt" type="button" data-sound="on" aria-pressed="false">ON</button>
+</div>
+
 {{SCRIPT}}
 </body>
 </html>

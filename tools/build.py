@@ -4,6 +4,10 @@ The page is handed around as a standalone file and gets opened from contexts tha
 don't resolve relative URLs, so nothing may reference an external resource: CSS,
 fonts, logo and grid script all get embedded.
 
+The one exception is the music track, which is fetched over the network. It is
+too large to inline and nothing depends on it, so it stays an absolute URL: the
+page renders and the countdown runs identically without it.
+
 Run after any edit to src/.
 """
 
@@ -17,7 +21,22 @@ ASSETS = ROOT / "assets"
 
 # Load order matters: grid and lasers paint the background, countdown reads the
 # headline that views.js later cross-fades. Add new modules here.
-SCRIPTS = ("grid.js", "lasers.js", "disco.js", "click.js", "countdown.js", "views.js")
+SCRIPTS = (
+    "grid.js",
+    "lasers.js",
+    "disco.js",
+    "click.js",
+    "sound.js",
+    "countdown.js",
+    "views.js",
+)
+
+# The one thing the page does not inline. At 2.1MB the track would add ~2.9MB of
+# base64 to a 142KB file, charged to every visitor whether or not they turn the
+# music on, so it is served from the Pages host instead. Absolute, because the
+# standalone copy of this page gets opened without a base URL and a relative
+# path would silently resolve to nothing. Change this if the repo moves.
+TRACK_URL = "https://aienai-admin.github.io/socialnight-holding-page/assets/music.mp3"
 
 
 def b64(path):
@@ -58,6 +77,7 @@ def main():
     # URI because it is handed to decodeAudioData, not to a src attribute.
     scripts = scripts.replace("{{CLICK_DOWN}}", b64(ASSETS / "click-down.wav"))
     scripts = scripts.replace("{{CLICK_UP}}", b64(ASSETS / "click-up.wav"))
+    scripts = scripts.replace("{{TRACK_URL}}", TRACK_URL)
     html = html.replace("{{SCRIPT}}", scripts)
 
     leftover = re.findall(r"\{\{[^}]+\}\}", html)
