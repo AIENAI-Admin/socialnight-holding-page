@@ -1341,6 +1341,19 @@ body {
 
   tick();
   addEventListener("hashchange", tick);
+  // A backgrounded tab has its timers throttled, and a frozen or suspended one
+  // has them deferred outright, so the swap can land late for anyone who left
+  // the page open across the start. tick() clears its own pending timer before
+  // doing anything, so calling it again is safe: it just re-reads the clock and
+  // re-arms. Returning to the tab therefore always shows the true state rather
+  // than whatever the last timer that managed to run left behind.
+  // Deliberately not gated on document.hidden. Ticking on the way out is
+  // harmless, and trusting that flag would mean trusting the one thing that is
+  // unreliable here: anything that reports the page hidden while it is on
+  // screen would suppress the very correction this exists to make.
+  // Bound to document, which is where the event is actually fired. It does
+  // bubble to window, but there is no reason to depend on that.
+  document.addEventListener("visibilitychange", tick);
 })();
 </script>
 <script>
