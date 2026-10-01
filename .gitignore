@@ -1,8 +1,2 @@
 .claude/settings.local.json
 .DS_Store
-
-# The music track, held back deliberately. This repo is public, so committing it
-# publishes it. The supplied file is a commercial release ripped from a stream
-# site and cannot go in until it is replaced with something licensed. Delete
-# these two lines once the track in assets/ is one we have the right to host.
-assets/music.mp3
